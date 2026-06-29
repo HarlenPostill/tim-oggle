@@ -80,7 +80,7 @@ export default function HostReveal({ code, room }: { code: string; room: Room })
             total={total}
           />
         ) : (
-          <p className="text-center text-xl text-white">Get ready… 👀</p>
+          <p className="text-center text-xl text-ink">Get ready… 👀</p>
         )}
       </div>
 
@@ -139,7 +139,7 @@ function WordHeadline({ verdict, nameOf, index, total }: HeadlineProps) {
       </span>
       <span
         className={`font-display text-4xl font-bold sm:text-5xl ${
-          dup ? 'text-grape/50 line-through' : 'text-white'
+          dup ? 'text-grape/50 line-through' : 'text-ink'
         }`}
       >
         {verdict.word}

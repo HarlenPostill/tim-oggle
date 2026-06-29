@@ -74,7 +74,7 @@ export default function PlayerPlaying({
         </div>
         <div
           className={`font-display text-2xl font-bold tabular-nums ${
-            remaining <= 10 ? 'animate-pulse text-red-400' : 'text-white'
+            remaining <= 10 ? 'animate-pulse text-red-500' : 'text-ink'
           }`}
         >
           {formatClock(remaining)}
@@ -105,7 +105,7 @@ export default function PlayerPlaying({
         {[...found].reverse().map((w) => (
           <span
             key={w}
-            className="rounded-full bg-grape/15 px-3 py-1 font-display text-sm text-white"
+            className="rounded-full bg-grape/15 px-3 py-1 font-display text-sm text-ink"
           >
             {w} <span className="text-lime">+{pointsFor(w)}</span>
           </span>
@@ -141,7 +141,7 @@ function WordBar({
   // While a finger is down we show the live word being traced.
   if (live) {
     return (
-      <div className="grid h-14 place-items-center rounded-2xl bg-surface-2 font-display text-2xl tracking-[0.3em] text-white">
+      <div className="grid h-14 place-items-center rounded-2xl bg-surface-2 font-display text-2xl tracking-[0.3em] text-ink">
         {live}
       </div>
     );
@@ -150,9 +150,9 @@ function WordBar({
   if (feedback) {
     const style: Record<FeedbackKind, string> = {
       valid: 'bg-lime/15 text-lime',
-      invalid: 'bg-red-500/15 text-red-300',
-      dupe: 'bg-gold/15 text-gold',
-      short: 'bg-red-500/15 text-red-300',
+      invalid: 'bg-red-500/15 text-red-600',
+      dupe: 'bg-gold/20 text-amber-700',
+      short: 'bg-red-500/15 text-red-600',
     };
     const label: Record<FeedbackKind, string> = {
       valid: `${feedback.word}  ✓ +${pointsFor(feedback.word)}`,

@@ -4,10 +4,10 @@ import { firebaseConfigured } from '../lib/firebase';
 export function ConfigWarning() {
   if (firebaseConfigured) return null;
   return (
-    <div className="mx-auto max-w-md rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-gold/90">
+    <div className="mx-auto max-w-md rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
       ⚠️ Firebase isn't configured yet. Add your keys to{' '}
-      <code className="rounded bg-black/30 px-1">.env</code> (see{' '}
-      <code className="rounded bg-black/30 px-1">SETUP.md</code>). Multiplayer
+      <code className="rounded bg-ink/10 px-1">.env</code> (see{' '}
+      <code className="rounded bg-ink/10 px-1">SETUP.md</code>). Multiplayer
       sync won't work until you do.
     </div>
   );
@@ -19,14 +19,14 @@ export function ConfigScreen() {
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-5 p-6 text-center">
       <span className="text-5xl">🔌</span>
-      <h2 className="font-display text-2xl font-bold text-white">
+      <h2 className="font-display text-2xl font-bold text-ink">
         Connect Firebase to play
       </h2>
       <div className="max-w-md text-grape/80">
         Add your Realtime Database keys to a{' '}
-        <code className="rounded bg-black/30 px-1">.env</code> file in the
+        <code className="rounded bg-ink/10 px-1">.env</code> file in the
         project root, then restart the dev server. Step-by-step instructions are
-        in <code className="rounded bg-black/30 px-1">SETUP.md</code>.
+        in <code className="rounded bg-ink/10 px-1">SETUP.md</code>.
       </div>
       <a
         href="#/"

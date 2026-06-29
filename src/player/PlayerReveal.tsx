@@ -56,7 +56,7 @@ export default function PlayerReveal({
         <RevealBoard board={room.board} word={word} className="w-full max-w-xs" />
       )}
 
-      <div className="font-display text-4xl font-bold text-white">
+      <div className="font-display text-4xl font-bold text-ink">
         {me?.score ?? 0} <span className="text-lg text-grape/70">pts</span>
       </div>
 

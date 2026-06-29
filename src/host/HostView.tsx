@@ -63,7 +63,7 @@ function ErrorScreen({ message }: { message: string }) {
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
       <span className="text-5xl">😬</span>
-      <p className="max-w-md text-lg text-red-300">{message}</p>
+      <p className="max-w-md text-lg text-red-600">{message}</p>
       <a
         href="#/"
         className="font-display text-grape underline-offset-4 hover:underline"

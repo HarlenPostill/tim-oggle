@@ -1,6 +1,6 @@
 import confetti from 'canvas-confetti';
 
-const PARTY_COLORS = ['#ff3da6', '#a855f7', '#22d3ee', '#fbbf24', '#a3e635'];
+const PARTY_COLORS = ['#2b95f0', '#18bcd4', '#6c8cff', '#ffb02e', '#2bbd6e'];
 
 /** A full-screen confetti celebration for the winner reveal: a big central
  *  burst plus a couple of seconds of streamers from both bottom corners. */

@@ -15,7 +15,7 @@ export default function PlayerLobby({
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center">
       <span className="animate-float-glow text-6xl">🎈</span>
-      <h2 className="font-display text-3xl font-bold text-white">
+      <h2 className="font-display text-3xl font-bold text-ink">
         You're in, {me?.name ?? 'friend'}!
       </h2>
       <p className="max-w-xs text-grape/80">

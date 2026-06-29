@@ -51,7 +51,7 @@ export default function PlayerJoin({ initialCode, onJoin }: Props) {
             autoCapitalize="characters"
             autoCorrect="off"
             autoComplete="off"
-            className="rounded-2xl border border-line bg-surface-2 px-4 py-4 text-center font-display text-3xl tracking-[0.5em] text-white outline-none focus:border-magenta"
+            className="rounded-2xl border border-line bg-surface-2 px-4 py-4 text-center font-display text-3xl tracking-[0.5em] text-ink outline-none focus:border-magenta"
           />
         </label>
         <label className="flex flex-col gap-1">
@@ -60,10 +60,10 @@ export default function PlayerJoin({ initialCode, onJoin }: Props) {
             value={name}
             onChange={(e) => setName(e.target.value.slice(0, 20))}
             placeholder="e.g. Tim"
-            className="rounded-2xl border border-line bg-surface-2 px-4 py-4 font-display text-xl text-white outline-none focus:border-magenta"
+            className="rounded-2xl border border-line bg-surface-2 px-4 py-4 font-display text-xl text-ink outline-none focus:border-magenta"
           />
         </label>
-        {error && <p className="text-center text-sm text-red-400">{error}</p>}
+        {error && <p className="text-center text-sm text-red-500">{error}</p>}
         <Button type="submit" disabled={busy} className="w-full">
           {busy ? 'Joining…' : 'Join the party 🎈'}
         </Button>

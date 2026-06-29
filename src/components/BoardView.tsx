@@ -15,10 +15,10 @@ export default function BoardView({ board, className = '' }: Props) {
         return (
           <div
             key={i}
-            className={`grid aspect-square place-items-center rounded-2xl font-display text-3xl font-bold sm:text-5xl ${
+            className={`grid aspect-square place-items-center rounded-2xl border-2 font-display text-3xl font-bold shadow-sm sm:text-5xl ${
               birthday
-                ? 'bg-surface-2 text-gold ring-2 ring-gold/60 shadow-[0_0_24px_-6px_rgba(251,191,36,0.6)]'
-                : 'border border-line bg-surface-2 text-white'
+                ? 'border-gold bg-gold/15 text-ink shadow-[0_0_24px_-6px_rgba(255,176,46,0.7)]'
+                : 'border-ink bg-white text-ink'
             }`}
           >
             {tile === 'QU' ? 'Qu' : tile}

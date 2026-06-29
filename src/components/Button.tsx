@@ -4,11 +4,11 @@ type Variant = 'primary' | 'gold' | 'secondary' | 'ghost';
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    'bg-linear-to-br from-magenta to-grape text-white shadow-lg shadow-magenta/30 hover:brightness-110',
-  gold: 'bg-linear-to-br from-gold to-magenta text-ink shadow-lg shadow-gold/30 hover:brightness-110',
+    'bg-linear-to-br from-magenta to-cyan text-white shadow-lg shadow-magenta/30 hover:brightness-105',
+  gold: 'bg-linear-to-br from-gold to-magenta text-ink shadow-lg shadow-gold/30 hover:brightness-105',
   secondary:
-    'bg-surface-2 text-white border border-line hover:border-grape/60',
-  ghost: 'bg-transparent text-grape hover:text-magenta',
+    'bg-surface text-ink border-2 border-line hover:border-magenta',
+  ghost: 'bg-transparent text-magenta hover:text-cyan',
 };
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {

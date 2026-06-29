@@ -43,10 +43,10 @@ export default function RevealBoard({ board, word, className = '' }: Props) {
               stiffness: 320,
               damping: 20,
             }}
-            className={`relative grid aspect-square place-items-center rounded-2xl font-display text-2xl font-bold sm:text-4xl ${
+            className={`relative grid aspect-square place-items-center rounded-2xl border-2 font-display text-2xl font-bold sm:text-4xl ${
               inPath
-                ? 'z-10 bg-magenta/25 text-white ring-4 ring-magenta shadow-lg shadow-magenta/40'
-                : 'border border-line bg-surface-2 text-white/25'
+                ? 'z-10 border-magenta bg-magenta/15 text-ink ring-4 ring-magenta/40 shadow-lg shadow-magenta/30'
+                : 'border-ink/20 bg-white text-ink/30'
             }`}
           >
             {tile === 'QU' ? 'Qu' : tile}
@@ -69,14 +69,14 @@ export default function RevealBoard({ board, word, className = '' }: Props) {
             key={word ?? ''}
             points={trail.map((p) => `${p.x},${p.y}`).join(' ')}
             fill="none"
-            stroke="#ff3da6"
+            stroke="#0a84ff"
             strokeWidth={2.2}
             strokeLinecap="round"
             strokeLinejoin="round"
             initial={{ pathLength: 0, opacity: 0.3 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: Math.min(0.9, trail.length * 0.12) }}
-            style={{ filter: 'drop-shadow(0 0 3px rgba(255,61,166,0.8))' }}
+            style={{ filter: 'drop-shadow(0 0 3px rgba(10,132,255,0.7))' }}
           />
         </svg>
       )}

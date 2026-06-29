@@ -35,7 +35,7 @@ export default function HostPlaying({ code, room, offset }: Props) {
     <main className="flex flex-1 flex-col items-center gap-6 p-6">
       <div
         className={`font-display text-7xl font-bold tabular-nums ${
-          low ? 'animate-pulse text-red-400' : 'text-white'
+          low ? 'animate-pulse text-red-500' : 'text-ink'
         }`}
       >
         {formatClock(remaining)}
@@ -51,7 +51,7 @@ export default function HostPlaying({ code, room, offset }: Props) {
               key={id}
               className="flex items-center justify-between rounded-xl bg-surface px-4 py-2"
             >
-              <span className="font-display text-white">{p.name}</span>
+              <span className="font-display text-ink">{p.name}</span>
               <span className="font-display text-magenta">
                 {p.words?.length ?? 0}
               </span>

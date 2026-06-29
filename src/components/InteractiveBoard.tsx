@@ -176,12 +176,12 @@ export default function InteractiveBoard({
           <div
             key={i}
             data-idx={i}
-            className={`grid aspect-square place-items-center rounded-2xl font-display text-3xl font-bold transition-transform duration-100 sm:text-4xl ${
+            className={`grid aspect-square place-items-center rounded-2xl border-2 font-display text-3xl font-bold shadow-sm transition-transform duration-100 sm:text-4xl ${
               selected
-                ? 'z-10 scale-105 bg-magenta/25 text-white ring-4 ring-magenta shadow-lg shadow-magenta/40'
+                ? 'z-10 scale-105 border-magenta bg-magenta/15 text-ink ring-4 ring-magenta/40 shadow-lg shadow-magenta/30'
                 : birthday
-                  ? 'bg-surface-2 text-gold ring-2 ring-gold/50'
-                  : 'border border-line bg-surface-2 text-white'
+                  ? 'border-gold bg-gold/15 text-ink'
+                  : 'border-ink bg-white text-ink'
             }`}
           >
             {/* pointer-events-none so elementFromPoint always hits the tile. */}
@@ -202,15 +202,15 @@ export default function InteractiveBoard({
             <polyline
               points={trail.map((p) => `${p.x},${p.y}`).join(' ')}
               fill="none"
-              stroke="#ff3da6"
+              stroke="#0a84ff"
               strokeWidth={2.4}
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ filter: 'drop-shadow(0 0 3px rgba(255,61,166,0.8))' }}
+              style={{ filter: 'drop-shadow(0 0 3px rgba(10,132,255,0.7))' }}
             />
           )}
           {trail.map((p, i) => (
-            <circle key={i} cx={p.x} cy={p.y} r={1.8} fill="#ffd6ec" />
+            <circle key={i} cx={p.x} cy={p.y} r={1.8} fill="#0a84ff" />
           ))}
         </svg>
       )}

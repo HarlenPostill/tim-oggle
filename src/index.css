@@ -1,21 +1,27 @@
 @import 'tailwindcss';
 
 /* ------------------------------------------------------------------ *
- * Tim-oggle theme — a dark, festive, neon birthday party palette.
+ * Tim-oggle theme — light, playful, sky-blue. White "sticker" tiles
+ * with dark outlines and bright blue accents.
  * Tailwind v4 reads --color-* tokens here and generates utilities
- * (bg-ink, text-magenta, border-line, ...). No tailwind.config.js needed.
+ * (bg-sky, text-ink, border-line, ...). No tailwind.config.js needed.
  * ------------------------------------------------------------------ */
 @theme {
-  --color-ink: #0b0614; /* page background — almost black grape */
-  --color-surface: #160c27; /* cards / panels */
-  --color-surface-2: #1f1140; /* raised panels, tiles */
-  --color-line: #2c1d4d; /* hairline borders */
+  /* surfaces & background */
+  --color-sky: #e6f2ff; /* page background — light blue */
+  --color-surface: #ffffff; /* cards / panels */
+  --color-surface-2: #ffffff; /* raised panels, tiles */
+  --color-line: #b9d8f5; /* soft blue hairline borders */
 
-  --color-magenta: #ff3da6; /* primary party accent */
-  --color-grape: #a855f7; /* secondary accent */
-  --color-cyan: #22d3ee; /* tertiary accent */
-  --color-gold: #fbbf24; /* winner / birthday gold */
-  --color-lime: #a3e635; /* "valid word" success */
+  /* text & outlines */
+  --color-ink: #0c2340; /* primary text, tile text + outline, text on accents */
+
+  /* playful, blue-led accents (names kept stable across the app) */
+  --color-magenta: #2b95f0; /* PRIMARY accent — bright sky blue */
+  --color-grape: #557aa6; /* secondary / muted text — readable slate-blue */
+  --color-cyan: #18bcd4; /* cyan accent */
+  --color-gold: #ffb02e; /* winner / birthday gold */
+  --color-lime: #2bbd6e; /* "valid word" success green */
 
   --font-display: 'Fredoka', system-ui, 'Segoe UI', sans-serif;
   --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -28,9 +34,10 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background: var(--color-ink);
-  color: #ede9fe;
+  background: var(--color-sky);
+  color: var(--color-ink);
   font-family: var(--font-sans);
+  color-scheme: light;
   /* Stop the whole page from rubber-banding / pull-to-refresh on mobile
      while a finger is dragging across the board. */
   overscroll-behavior: none;
@@ -62,11 +69,11 @@ body {
   0%,
   100% {
     transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.55;
+    opacity: 0.5;
   }
   50% {
     transform: translate3d(0, -12px, 0) scale(1.08);
-    opacity: 0.8;
+    opacity: 0.75;
   }
 }
 

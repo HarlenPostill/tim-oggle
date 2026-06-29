@@ -56,14 +56,14 @@ export default function HostLobby({
 
       <div className="flex flex-col items-center gap-3">
         <p className="text-grape/80">
-          Join at <span className="font-semibold text-white">{where}</span> with
+          Join at <span className="font-semibold text-ink">{where}</span> with
           code
         </p>
         <div className="flex gap-2 sm:gap-3">
           {code.split("").map((ch, i) => (
             <div
               key={i}
-              className="grid h-16 w-14 place-items-center rounded-2xl border border-line bg-surface-2 font-display text-4xl font-bold text-white shadow-lg shadow-magenta/10 sm:h-20 sm:w-16 sm:text-5xl"
+              className="grid h-16 w-14 place-items-center rounded-2xl border-2 border-ink bg-white font-display text-4xl font-bold text-ink shadow-sm sm:h-20 sm:w-16 sm:text-5xl"
             >
               {ch}
             </div>
@@ -78,7 +78,7 @@ export default function HostLobby({
       </div>
 
       <div className="w-full max-w-2xl">
-        <h3 className="mb-3 text-center font-display text-xl text-white">
+        <h3 className="mb-3 text-center font-display text-xl text-ink">
           Players <span className="text-grape/70">({entries.length})</span>
         </h3>
         {entries.length === 0 ? (
@@ -96,7 +96,7 @@ export default function HostLobby({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.6 }}
                   transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                  className="rounded-full border border-grape/40 bg-grape/15 px-4 py-2 font-display text-white"
+                  className="rounded-full border border-magenta/40 bg-magenta/10 px-4 py-2 font-display text-ink"
                 >
                   {p.name}
                 </motion.div>
@@ -114,7 +114,7 @@ export default function HostLobby({
               onClick={() => setMode(opt.mode)}
               className={`flex flex-col items-center rounded-2xl px-5 py-3 transition ${
                 mode === opt.mode
-                  ? "bg-magenta/20 text-white ring-2 ring-magenta"
+                  ? "bg-magenta/15 text-ink ring-2 ring-magenta"
                   : "border border-line bg-surface-2 text-grape/80"
               }`}
             >

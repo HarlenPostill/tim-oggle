@@ -11,9 +11,9 @@ interface Props {
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 const RANK_BAR = [
-  'bg-linear-to-t from-gold/70 to-gold',
-  'bg-linear-to-t from-grape/70 to-grape',
-  'bg-linear-to-t from-cyan/60 to-cyan',
+  'bg-linear-to-t from-magenta to-cyan',
+  'bg-linear-to-t from-cyan to-magenta',
+  'bg-linear-to-t from-grape to-cyan',
 ];
 
 /** Leaderboard podium. Bars animate height as scores change, and the whole
@@ -58,11 +58,11 @@ export default function Podium({ players, winnerId, celebrate = false }: Props) 
                 style={{ minHeight: 10 }}
                 className={`relative w-full rounded-t-2xl ${
                   isWinner
-                    ? 'bg-linear-to-t from-gold to-magenta shadow-[0_0_30px_-4px_rgba(251,191,36,0.8)]'
+                    ? 'bg-linear-to-t from-gold to-magenta shadow-[0_0_30px_-4px_rgba(255,176,46,0.75)]'
                     : RANK_BAR[idx] ?? 'bg-linear-to-t from-magenta/60 to-magenta'
                 }`}
               >
-                <span className="absolute -top-7 inset-x-0 text-center font-display text-lg font-bold text-white sm:text-xl">
+                <span className="absolute -top-7 inset-x-0 text-center font-display text-lg font-bold text-ink sm:text-xl">
                   {r.score}
                 </span>
                 {isWinner && (
@@ -77,7 +77,7 @@ export default function Podium({ players, winnerId, celebrate = false }: Props) 
               <span className="text-xl">{MEDALS[idx] ?? '🎲'}</span>
               <span
                 className={`max-w-[5.5rem] truncate text-center font-display text-sm font-semibold sm:text-base ${
-                  isWinner ? 'text-gold' : 'text-white/90'
+                  isWinner ? 'text-amber-600' : 'text-ink/90'
                 }`}
                 title={r.name}
               >
