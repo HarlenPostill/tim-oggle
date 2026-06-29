@@ -86,7 +86,7 @@ export default function AllWordsSidebar({ board, players }: Props) {
           className="absolute inset-x-0 px-4 py-2 flex flex-col gap-1 group-hover:[animation-play-state:paused]"
           style={{
             animation: `sidebar-scroll-up ${duration}s linear infinite`,
-            animationDelay: "3s",
+            animationDelay: "5s",
           }}
         >
           {displayList.map((w, i) => {

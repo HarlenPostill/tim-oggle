@@ -52,6 +52,7 @@ export default function Podium({ players, winnerId, celebrate = false }: Props) 
         return (
           <motion.div
             key={r.id}
+            id={`podium-${r.id}`}
             layout
             transition={{ type: 'spring', stiffness: 260, damping: 26 }}
             className="flex w-16 shrink-0 flex-col items-center sm:w-24"

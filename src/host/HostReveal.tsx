@@ -76,12 +76,15 @@ export default function HostReveal({ code, room }: { code: string; room: Room })
               No words found this round 😅
             </p>
           ) : word ? (
-            <WordHeadline
-              verdict={verdictFor(word, tally)}
-              nameOf={nameOf}
-              index={idx}
-              total={total}
-            />
+            <>
+              <WordHeadline
+                verdict={verdictFor(word, tally)}
+                nameOf={nameOf}
+                index={idx}
+                total={total}
+              />
+              <FlyingWord verdict={verdictFor(word, tally)} index={idx} />
+            </>
           ) : (
             <p className="text-center text-xl text-ink">Get ready… 👀</p>
           )}
@@ -147,6 +150,7 @@ function WordHeadline({ verdict, nameOf, index, total }: HeadlineProps) {
         Word {index + 1} of {total}
       </span>
       <span
+        id="headline-word"
         className={`font-display text-4xl font-bold sm:text-5xl ${
           dup ? 'text-grape/50 line-through' : 'text-ink'
         }`}
@@ -163,6 +167,65 @@ function WordHeadline({ verdict, nameOf, index, total }: HeadlineProps) {
           {nameOf(verdict.submitters[0])}
         </span>
       )}
+    </motion.div>
+  );
+}
+
+function FlyingWord({ verdict, index }: { verdict: WordVerdict; index: number }) {
+  const [coords, setCoords] = useState<{ start: DOMRect, end?: DOMRect } | null>(null);
+
+  useEffect(() => {
+    // We delay slightly to allow the WordHeadline to mount and animate in
+    const t = setTimeout(() => {
+      const startEl = document.getElementById('headline-word');
+      const endEl = verdict.unique ? document.getElementById(`podium-${verdict.submitters[0]}`) : null;
+      if (startEl) {
+        setCoords({
+          start: startEl.getBoundingClientRect(),
+          end: endEl ? endEl.getBoundingClientRect() : undefined
+        });
+      }
+    }, 150);
+    return () => clearTimeout(t);
+  }, [verdict]);
+
+  if (!coords) return null;
+
+  const { start, end } = coords;
+  const isDup = !verdict.unique;
+
+  const startX = start.left + start.width / 2;
+  const startY = start.top + start.height / 2;
+
+  let animateTo = {};
+  if (isDup) {
+    animateTo = {
+      y: startY + 100,
+      opacity: 0,
+      scale: 0.8,
+      rotate: 15,
+      color: '#ef4444' // red
+    };
+  } else if (end) {
+    animateTo = {
+      x: end.left + end.width / 2,
+      y: end.top + 40,
+      opacity: 0,
+      scale: 0.3,
+      color: '#2bbd6e' // lime
+    };
+  }
+
+  return (
+    <motion.div
+      key={`${verdict.word}-${index}-fly`}
+      initial={{ x: startX, y: startY, opacity: 1, scale: 1, color: '#0c2340' }}
+      animate={animateTo}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+      className="fixed top-0 left-0 m-0 z-50 pointer-events-none font-display text-4xl font-bold"
+      style={{ translateX: '-50%', translateY: '-50%' }}
+    >
+      {verdict.word}
     </motion.div>
   );
 }
