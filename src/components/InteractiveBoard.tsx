@@ -175,8 +175,7 @@ export default function InteractiveBoard({
         return (
           <div
             key={i}
-            data-idx={i}
-            className={`grid aspect-square place-items-center rounded-2xl border-2 font-display text-3xl font-bold shadow-sm transition-transform duration-100 sm:text-4xl ${
+            className={`relative grid aspect-square place-items-center rounded-2xl border-2 font-display text-3xl font-bold shadow-sm transition-transform duration-100 sm:text-4xl ${
               selected
                 ? 'z-10 scale-105 border-magenta bg-magenta/15 text-ink ring-4 ring-magenta/40 shadow-lg shadow-magenta/30'
                 : birthday
@@ -184,6 +183,11 @@ export default function InteractiveBoard({
                   : 'border-ink bg-white text-ink'
             }`}
           >
+            {/* Hit target: circular and slightly smaller to prevent accidental diagonal clipping */}
+            <div
+              data-idx={i}
+              className="absolute left-1/2 top-1/2 h-[95%] w-[95%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            />
             {/* pointer-events-none so elementFromPoint always hits the tile. */}
             <span className="pointer-events-none">
               {tile === 'QU' ? 'Qu' : tile}
