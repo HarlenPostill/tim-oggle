@@ -9,6 +9,7 @@ import { normalizePlayers, toArray } from '../lib/util';
 import Podium from '../components/Podium';
 import RevealBoard from '../components/RevealBoard';
 import Button from '../components/Button';
+import AllWordsSidebar from './AllWordsSidebar';
 
 // Auto-play pacing (ms). The "fast" delay kicks in when a phone toggles speed-up.
 const DELAY_START = 900;
@@ -54,8 +55,9 @@ export default function HostReveal({ code, room }: { code: string; room: Room })
   const nameOf = (id: string) => players[id]?.name ?? 'Player';
 
   return (
-    <main className="flex flex-1 flex-col items-center gap-5 p-6">
-      <div className="flex items-center gap-3">
+    <div className="flex flex-1 overflow-hidden w-full">
+      <main className="flex flex-1 flex-col items-center gap-5 p-6 overflow-y-auto relative">
+        <div className="flex items-center gap-3 shrink-0">
         <h2 className="font-display text-2xl text-grape/80">
           {finished ? '🎉 Final Results' : 'Results'}
         </h2>
@@ -93,7 +95,7 @@ export default function HostReveal({ code, room }: { code: string; room: Room })
         <Podium players={players} winnerId={winnerId} celebrate={finished} />
       </div>
 
-      <div className="mt-auto flex items-center gap-3">
+      <div className="mt-auto flex items-center gap-3 shrink-0 pb-4">
         {total > 0 && !finished && (
           <>
             <Button variant="secondary" onClick={() => setPaused((p) => !p)}>
@@ -113,7 +115,12 @@ export default function HostReveal({ code, room }: { code: string; room: Room })
           </Button>
         )}
       </div>
-    </main>
+      </main>
+      
+      {finished && room.board && (
+        <AllWordsSidebar board={room.board} players={room.players} />
+      )}
+    </div>
   );
 }
 

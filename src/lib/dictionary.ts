@@ -102,3 +102,8 @@ export function isWord(word: string): boolean {
   const w = word.toUpperCase();
   return w.length >= MIN_WORD_LENGTH && wordSet !== null && wordSet.has(w);
 }
+
+/** Get all valid words from the loaded dictionary. */
+export function getAllValidWords(): string[] {
+  return wordSet ? Array.from(wordSet) : [];
+}

@@ -106,3 +106,9 @@ body {
 .animate-shake {
   animation: shake-x 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
+
+/* Used for the slow auto-scroll of the all-words list at the end of the game */
+@keyframes sidebar-scroll-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
