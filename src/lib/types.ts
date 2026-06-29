@@ -6,6 +6,9 @@
 
 export type GameStatus = 'LOBBY' | 'PLAYING' | 'REVEAL';
 
+/** TIM_TIME = fixed "HAPPYBIRTHDAYTIM" board; BOGGLE = randomised dice. */
+export type GameMode = 'TIM_TIME' | 'BOGGLE';
+
 /** One cell of the board. Normally a single letter, but "QU" is a single
  *  Boggle tile that contributes two letters to a word. */
 export type Tile = string;
@@ -28,8 +31,12 @@ export interface Room {
   /** Which client is the authority (the TV / host). */
   hostId: string;
   createdAt: number;
+  /** Chosen in the lobby; decides how the board is generated. */
+  mode: GameMode;
   /** Length of a round in seconds (host-configurable in the lobby). */
   roundSeconds: number;
+  /** Shared "speed up the reveal" flag — any phone can toggle it. */
+  revealFast: boolean;
   /** Server-resolved timestamp (ms epoch) of when PLAYING began. We derive the
    *  countdown from this + roundSeconds so every client agrees regardless of
    *  device clock skew. null until the host starts. */

@@ -1,24 +1,40 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import type { Room } from '../lib/types';
-import { startGame } from '../lib/game';
-import { normalizePlayers } from '../lib/util';
-import Button from '../components/Button';
-import Wordmark from '../components/Wordmark';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import type { GameMode, Room } from "../lib/types";
+import { startGame } from "../lib/game";
+import { normalizePlayers } from "../lib/util";
+import Button from "../components/Button";
+import Wordmark from "../components/Wordmark";
 
 const ROUND_OPTIONS: { s: number; label: string }[] = [
-  { s: 60, label: '1:00' },
-  { s: 90, label: '1:30' },
-  { s: 120, label: '2:00' },
-  { s: 180, label: '3:00' },
+  { s: 60, label: "1:00" },
+  { s: 90, label: "1:30" },
+  { s: 120, label: "2:00" },
+  { s: 180, label: "3:00" },
 ];
 
-export default function HostLobby({ code, room }: { code: string; room: Room }) {
+const MODE_OPTIONS: { mode: GameMode; label: string; blurb: string }[] = [
+  {
+    mode: "TIM_TIME",
+    label: "🎂 Tim-oggle Time",
+    blurb: "Special birthday board",
+  },
+  { mode: "BOGGLE", label: "🎲 Boggle", blurb: "Classic random dice" },
+];
+
+export default function HostLobby({
+  code,
+  room,
+}: {
+  code: string;
+  room: Room;
+}) {
   const players = normalizePlayers(room.players);
   const entries = Object.entries(players).sort(
     (a, b) => a[1].joinedAt - b[1].joinedAt,
   );
   const [seconds, setSeconds] = useState(room.roundSeconds ?? 90);
+  const [mode, setMode] = useState<GameMode>(room.mode ?? "TIM_TIME");
   const [copied, setCopied] = useState(false);
 
   const joinUrl = `${window.location.origin}${window.location.pathname}#/join?code=${code}`;
@@ -44,7 +60,7 @@ export default function HostLobby({ code, room }: { code: string; room: Room }) 
           code
         </p>
         <div className="flex gap-2 sm:gap-3">
-          {code.split('').map((ch, i) => (
+          {code.split("").map((ch, i) => (
             <div
               key={i}
               className="grid h-16 w-14 place-items-center rounded-2xl border border-line bg-surface-2 font-display text-4xl font-bold text-white shadow-lg shadow-magenta/10 sm:h-20 sm:w-16 sm:text-5xl"
@@ -57,7 +73,7 @@ export default function HostLobby({ code, room }: { code: string; room: Room }) 
           onClick={copy}
           className="text-sm text-grape underline-offset-4 hover:underline"
         >
-          {copied ? 'Copied! ✓' : 'Copy join link'}
+          {copied ? "Copied! ✓" : "Copy join link"}
         </button>
       </div>
 
@@ -79,7 +95,7 @@ export default function HostLobby({ code, room }: { code: string; room: Room }) 
                   initial={{ opacity: 0, scale: 0.6 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.6 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
                   className="rounded-full border border-grape/40 bg-grape/15 px-4 py-2 font-display text-white"
                 >
                   {p.name}
@@ -91,6 +107,25 @@ export default function HostLobby({ code, room }: { code: string; room: Room }) 
       </div>
 
       <div className="mt-auto flex flex-col items-center gap-4">
+        <div className="flex flex-wrap justify-center gap-3">
+          {MODE_OPTIONS.map((opt) => (
+            <button
+              key={opt.mode}
+              onClick={() => setMode(opt.mode)}
+              className={`flex flex-col items-center rounded-2xl px-5 py-3 transition ${
+                mode === opt.mode
+                  ? "bg-magenta/20 text-white ring-2 ring-magenta"
+                  : "border border-line bg-surface-2 text-grape/80"
+              }`}
+            >
+              <span className="font-display text-lg font-semibold">
+                {opt.label}
+              </span>
+              <span className="text-xs text-grape/60">{opt.blurb}</span>
+            </button>
+          ))}
+        </div>
+
         <div className="flex items-center gap-2">
           <span className="text-sm text-grape/70">Round:</span>
           {ROUND_OPTIONS.map(({ s, label }) => (
@@ -99,18 +134,19 @@ export default function HostLobby({ code, room }: { code: string; room: Room }) 
               onClick={() => setSeconds(s)}
               className={`rounded-full px-3 py-1 font-display text-sm transition ${
                 seconds === s
-                  ? 'bg-magenta text-white'
-                  : 'border border-line bg-surface-2 text-grape/80'
+                  ? "bg-magenta text-white"
+                  : "border border-line bg-surface-2 text-grape/80"
               }`}
             >
               {label}
             </button>
           ))}
         </div>
+
         <Button
           variant="gold"
           disabled={entries.length === 0}
-          onClick={() => startGame(code, seconds)}
+          onClick={() => startGame(code, seconds, mode)}
         >
           🎲 Start Tim-oggle!
         </Button>

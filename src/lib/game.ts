@@ -1,7 +1,7 @@
 import { ref, get, set, update, serverTimestamp } from 'firebase/database';
 import { db } from './firebase';
-import type { Player, Room } from './types';
-import { generateBoard } from './board';
+import type { GameMode, Player, Room } from './types';
+import { boardForMode } from './board';
 import { buildRevealOrder, scoresUpTo, tallyWords } from './scoring';
 import { normalizePlayers, toArray } from './util';
 
@@ -35,7 +35,9 @@ export async function createRoom(hostId: string): Promise<string> {
       status: 'LOBBY',
       hostId,
       createdAt: Date.now(),
+      mode: 'TIM_TIME',
       roundSeconds: ROUND_SECONDS_DEFAULT,
+      revealFast: false,
       startedAt: null,
       board: null,
       players: null,
@@ -78,20 +80,31 @@ export async function setPlayerWords(
   await set(ref(db, `${roomPath(code)}/players/${playerId}/words`), words);
 }
 
-/** Host: generate the board and flip everyone into PLAYING. We store a
- *  server-resolved startedAt so all clients run an identical countdown. */
+/** Host: generate the board (per mode) and flip everyone into PLAYING. We store
+ *  a server-resolved startedAt so all clients run an identical countdown. */
 export async function startGame(
   code: string,
   roundSeconds: number,
+  mode: GameMode,
 ): Promise<void> {
   await update(ref(db, roomPath(code)), {
-    board: generateBoard(),
+    board: boardForMode(mode),
+    mode,
     status: 'PLAYING',
     roundSeconds,
+    revealFast: false,
     startedAt: serverTimestamp(),
     revealWords: null,
     currentRevealIndex: -1,
   });
+}
+
+/** Any phone: toggle the shared "speed up the reveal" flag. */
+export async function setRevealSpeed(
+  code: string,
+  fast: boolean,
+): Promise<void> {
+  await set(ref(db, `${roomPath(code)}/revealFast`), fast);
 }
 
 /** Host: round is over. Aggregate every word, build the reveal order, and
@@ -155,6 +168,7 @@ export async function playAgain(code: string): Promise<void> {
     status: 'LOBBY',
     board: null,
     startedAt: null,
+    revealFast: false,
     revealWords: null,
     currentRevealIndex: -1,
   };

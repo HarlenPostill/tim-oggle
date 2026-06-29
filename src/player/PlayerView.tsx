@@ -65,7 +65,7 @@ export default function PlayerView({ initialCode }: { initialCode: string | null
     case 'PLAYING':
       return <PlayerPlaying code={code} room={room} playerId={playerId} />;
     case 'REVEAL':
-      return <PlayerReveal room={room} playerId={playerId} />;
+      return <PlayerReveal code={code} room={room} playerId={playerId} />;
     default:
       return <PlayerLobby room={room} playerId={playerId} />;
   }
