@@ -54,16 +54,11 @@ export default function PlayerView({ initialCode }: { initialCode: string | null
 
   const { room, loading } = useRoom(code);
 
-  // If our slot disappears while connected (host removed us), drop back to the
-  // join screen instead of showing a ghost lobby.
+  // If our slot disappears while connected (host removed us), forget the saved
+  // identity. The render below then drops us back to the join screen.
   useEffect(() => {
     if (!code || !playerId || !room) return;
-    const players = normalizePlayers(room.players);
-    if (!(playerId in players)) {
-      clearIdentity();
-      setCode(null);
-      setPlayerId(null);
-    }
+    if (!(playerId in normalizePlayers(room.players))) clearIdentity();
   }, [room, code, playerId]);
 
   const handleJoin = async (joinCode: string, name: string) => {
@@ -80,6 +75,11 @@ export default function PlayerView({ initialCode }: { initialCode: string | null
     return <PlayerJoin initialCode={initialCode} onJoin={handleJoin} />;
   }
   if (loading || !room) return <Loading label="Joining room…" />;
+
+  // Removed by the host (or our slot is otherwise gone) — back to the join form.
+  if (!(playerId in normalizePlayers(room.players))) {
+    return <PlayerJoin initialCode={initialCode} onJoin={handleJoin} />;
+  }
 
   switch (room.status) {
     case 'PLAYING':

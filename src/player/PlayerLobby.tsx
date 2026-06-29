@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import type { Room } from "../lib/types";
 import { setPlayerName } from "../lib/game";
 import { updateIdentity } from "../lib/session";
 import { normalizePlayers } from "../lib/util";
 import Button from "../components/Button";
+
+// Lazy so matter-js only downloads for players who actually reach the lobby.
+const SuikaGame = lazy(() => import("../components/SuikaGame"));
 
 export default function PlayerLobby({
   code,
@@ -41,8 +44,8 @@ export default function PlayerLobby({
   };
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center">
-      <span className="animate-float-glow text-6xl">🎈</span>
+    <main className="flex flex-1 flex-col items-center gap-4 p-4 text-center">
+      <span className="animate-float-glow text-5xl">🎈</span>
 
       {editing ? (
         <div className="flex w-full max-w-xs flex-col gap-3">
@@ -89,6 +92,17 @@ export default function PlayerLobby({
       <p className="text-sm text-grape/60">
         {count} {count === 1 ? "player" : "players"} in the room
       </p>
+
+      <div className="mt-1 w-full max-w-sm border-t border-line pt-3">
+        <p className="mb-2 font-display text-grape/80">While you wait… 🍉</p>
+        <Suspense
+          fallback={
+            <p className="py-8 text-center text-grape/50">Loading mini-game…</p>
+          }
+        >
+          <SuikaGame />
+        </Suspense>
+      </div>
     </main>
   );
 }

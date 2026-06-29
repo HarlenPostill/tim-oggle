@@ -13,6 +13,7 @@
     "canvas-confetti": "^1.9.4",
     "firebase": "^12.15.0",
     "framer-motion": "^12.42.0",
+    "matter-js": "^0.20.0",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
@@ -24,6 +25,7 @@
     "@tailwindcss/vite": "^4.3.1",
     "@types/babel__core": "^7.20.5",
     "@types/canvas-confetti": "^1.9.0",
+    "@types/matter-js": "^0.20.2",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
