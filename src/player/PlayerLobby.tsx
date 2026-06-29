@@ -1,10 +1,16 @@
-import type { Room } from '../lib/types';
-import { normalizePlayers } from '../lib/util';
+import { useState } from "react";
+import type { Room } from "../lib/types";
+import { setPlayerName } from "../lib/game";
+import { updateIdentity } from "../lib/session";
+import { normalizePlayers } from "../lib/util";
+import Button from "../components/Button";
 
 export default function PlayerLobby({
+  code,
   room,
   playerId,
 }: {
+  code: string;
   room: Room;
   playerId: string;
 }) {
@@ -12,17 +18,76 @@ export default function PlayerLobby({
   const me = players[playerId];
   const count = Object.keys(players).length;
 
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState(me?.name ?? "");
+  const [saving, setSaving] = useState(false);
+
+  const startEdit = () => {
+    setName(me?.name ?? "");
+    setEditing(true);
+  };
+
+  const save = async () => {
+    const clean = name.trim().slice(0, 20);
+    if (!clean) return;
+    setSaving(true);
+    try {
+      await setPlayerName(code, playerId, clean);
+      updateIdentity({ name: clean });
+      setEditing(false);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center">
       <span className="animate-float-glow text-6xl">🎈</span>
-      <h2 className="font-display text-3xl font-bold text-ink">
-        You're in, {me?.name ?? 'friend'}!
-      </h2>
+
+      {editing ? (
+        <div className="flex w-full max-w-xs flex-col gap-3">
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value.slice(0, 20))}
+            autoFocus
+            className="rounded-2xl border-2 border-line bg-white px-4 py-3 text-center font-display text-2xl text-ink outline-none focus:border-magenta"
+          />
+          <div className="flex gap-2">
+            <Button
+              onClick={save}
+              disabled={saving || !name.trim()}
+              className="flex-1"
+            >
+              {saving ? "Saving…" : "Save"}
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => setEditing(false)}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <h2 className="font-display text-3xl font-bold text-ink">
+            You're in, {me?.name ?? "friend"}!
+          </h2>
+          <button
+            onClick={startEdit}
+            className="text-sm text-magenta underline-offset-4 hover:underline"
+          >
+            ✏️ Edit name
+          </button>
+        </>
+      )}
+
       <p className="max-w-xs text-grape/80">
-        Watch the big screen 📺 — the game starts when the host hits go.
+        Watch the big screen and admire the logo.
       </p>
       <p className="text-sm text-grape/60">
-        {count} {count === 1 ? 'player' : 'players'} in the room
+        {count} {count === 1 ? "player" : "players"} in the room
       </p>
     </main>
   );

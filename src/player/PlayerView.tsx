@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { firebaseConfigured } from '../lib/firebase';
-import { joinRoom, roomExists } from '../lib/game';
+import { joinRoom, playerExists, roomExists } from '../lib/game';
 import { useRoom } from '../lib/hooks';
 import { loadDictionary } from '../lib/dictionary';
-import { loadIdentity, saveIdentity } from '../lib/session';
-import { genId } from '../lib/util';
+import { clearIdentity, loadIdentity, saveIdentity } from '../lib/session';
+import { genId, normalizePlayers } from '../lib/util';
 import Loading from '../components/Loading';
 import { ConfigScreen } from '../components/ConfigWarning';
 import PlayerJoin from './PlayerJoin';
@@ -24,17 +24,25 @@ export default function PlayerView({ initialCode }: { initialCode: string | null
     loadDictionary();
   }, []);
 
-  // Re-attach to a previous session after a refresh.
+  // Re-attach to a previous session (cookie survives a full disconnect). Only
+  // if the room + our player slot still exist, and we weren't sent here to join
+  // a *different* room via a scanned QR / link.
   useEffect(() => {
     if (restoreRef.current) return;
     restoreRef.current = true;
     (async () => {
       const id = loadIdentity();
-      if (id && !id.isHost && firebaseConfigured) {
+      const wantsOtherRoom = !!initialCode && initialCode !== id?.roomCode;
+      if (id && !id.isHost && firebaseConfigured && !wantsOtherRoom) {
         try {
-          if (await roomExists(id.roomCode)) {
+          if (
+            (await roomExists(id.roomCode)) &&
+            (await playerExists(id.roomCode, id.playerId))
+          ) {
             setCode(id.roomCode);
             setPlayerId(id.playerId);
+          } else {
+            clearIdentity(); // room ended or slot gone — start fresh
           }
         } catch {
           /* fall through to the join form */
@@ -42,9 +50,21 @@ export default function PlayerView({ initialCode }: { initialCode: string | null
       }
       setRestoring(false);
     })();
-  }, []);
+  }, [initialCode]);
 
   const { room, loading } = useRoom(code);
+
+  // If our slot disappears while connected (host removed us), drop back to the
+  // join screen instead of showing a ghost lobby.
+  useEffect(() => {
+    if (!code || !playerId || !room) return;
+    const players = normalizePlayers(room.players);
+    if (!(playerId in players)) {
+      clearIdentity();
+      setCode(null);
+      setPlayerId(null);
+    }
+  }, [room, code, playerId]);
 
   const handleJoin = async (joinCode: string, name: string) => {
     const id = genId();
@@ -67,6 +87,6 @@ export default function PlayerView({ initialCode }: { initialCode: string | null
     case 'REVEAL':
       return <PlayerReveal code={code} room={room} playerId={playerId} />;
     default:
-      return <PlayerLobby room={room} playerId={playerId} />;
+      return <PlayerLobby code={code} room={room} playerId={playerId} />;
   }
 }

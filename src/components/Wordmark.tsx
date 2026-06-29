@@ -1,8 +1,11 @@
+import logoUrl from '../assets/logo.svg';
+
+// Heights per size (the logo keeps its own aspect ratio via w-auto).
 const SIZES = {
-  sm: 'text-3xl',
-  md: 'text-5xl',
-  lg: 'text-6xl sm:text-7xl',
-  xl: 'text-7xl sm:text-8xl',
+  sm: 'h-8',
+  md: 'h-12',
+  lg: 'h-16 sm:h-20',
+  xl: 'h-24 sm:h-32',
 };
 
 interface Props {
@@ -10,16 +13,13 @@ interface Props {
   className?: string;
 }
 
-/** The Tim-oggle wordmark — "Tim" gets the birthday-gold gradient treatment. */
+/** The Tim-oggle logo. */
 export default function Wordmark({ size = 'lg', className = '' }: Props) {
   return (
-    <h1
-      className={`select-none font-display font-bold leading-none tracking-tight ${SIZES[size]} ${className}`}
-    >
-      <span className="bg-linear-to-br from-gold via-magenta to-cyan bg-clip-text text-transparent drop-shadow-[0_2px_18px_rgba(43,149,240,0.3)]">
-        Tim
-      </span>
-      <span className="text-ink">-oggle</span>
-    </h1>
+    <img
+      src={logoUrl}
+      alt="Tim-oggle"
+      className={`w-auto select-none drop-shadow-[0_3px_12px_rgba(12,83,207,0.25)] ${SIZES[size]} ${className}`}
+    />
   );
 }

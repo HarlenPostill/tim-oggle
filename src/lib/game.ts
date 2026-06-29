@@ -80,6 +80,33 @@ export async function setPlayerWords(
   await set(ref(db, `${roomPath(code)}/players/${playerId}/words`), words);
 }
 
+/** Does this player's slot still exist? (used to validate a reconnect). */
+export async function playerExists(
+  code: string,
+  playerId: string,
+): Promise<boolean> {
+  const snap = await get(ref(db, `${roomPath(code)}/players/${playerId}`));
+  return snap.exists();
+}
+
+/** Player: rename themselves (allowed in the lobby before the game starts). */
+export async function setPlayerName(
+  code: string,
+  playerId: string,
+  name: string,
+): Promise<void> {
+  const clean = name.trim().slice(0, 20) || 'Player';
+  await set(ref(db, `${roomPath(code)}/players/${playerId}/name`), clean);
+}
+
+/** Host: remove a player from the room entirely. */
+export async function removePlayer(
+  code: string,
+  playerId: string,
+): Promise<void> {
+  await set(ref(db, `${roomPath(code)}/players/${playerId}`), null);
+}
+
 /** Host: generate the board (per mode) and flip everyone into PLAYING. We store
  *  a server-resolved startedAt so all clients run an identical countdown. */
 export async function startGame(

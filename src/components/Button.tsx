@@ -1,14 +1,13 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-type Variant = 'primary' | 'gold' | 'secondary' | 'ghost';
+type Variant = "primary" | "gold" | "secondary" | "ghost";
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    'bg-linear-to-br from-magenta to-cyan text-white shadow-lg shadow-magenta/30 hover:brightness-105',
-  gold: 'bg-linear-to-br from-gold to-magenta text-ink shadow-lg shadow-gold/30 hover:brightness-105',
-  secondary:
-    'bg-surface text-ink border-2 border-line hover:border-magenta',
-  ghost: 'bg-transparent text-magenta hover:text-cyan',
+    "bg-linear-to-br from-magenta to-cyan text-white shadow-lg shadow-magenta/30 hover:brightness-105",
+  gold: "bg-linear-to-br from-blue to-magenta text-ink shadow-lg shadow-blue/30 hover:brightness-105",
+  secondary: "bg-surface text-ink border-2 border-line hover:border-magenta",
+  ghost: "bg-transparent text-magenta hover:text-cyan",
 };
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -17,8 +16,8 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({
-  variant = 'primary',
-  className = '',
+  variant = "primary",
+  className = "",
   children,
   ...rest
 }: Props) {
