@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ *
+ * Tim-oggle theme — a dark, festive, neon birthday party palette.
+ * Tailwind v4 reads --color-* tokens here and generates utilities
+ * (bg-ink, text-magenta, border-line, ...). No tailwind.config.js needed.
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-ink: #0b0614; /* page background — almost black grape */
+  --color-surface: #160c27; /* cards / panels */
+  --color-surface-2: #1f1140; /* raised panels, tiles */
+  --color-line: #2c1d4d; /* hairline borders */
+
+  --color-magenta: #ff3da6; /* primary party accent */
+  --color-grape: #a855f7; /* secondary accent */
+  --color-cyan: #22d3ee; /* tertiary accent */
+  --color-gold: #fbbf24; /* winner / birthday gold */
+  --color-lime: #a3e635; /* "valid word" success */
+
+  --font-display: 'Fredoka', system-ui, 'Segoe UI', sans-serif;
+  --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ------------------------------------------------------------------ *
+ * Global resets tuned for a mobile, drag-to-draw game.
+ * ------------------------------------------------------------------ */
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--color-ink);
+  color: #ede9fe;
+  font-family: var(--font-sans);
+  /* Stop the whole page from rubber-banding / pull-to-refresh on mobile
+     while a finger is dragging across the board. */
+  overscroll-behavior: none;
+}
+
+body {
+  /* Kill the grey tap flash and accidental text selection during drags. */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utility: applied to the interactive board so the browser never tries to
+   scroll/zoom from gestures that start on a tile. Paired with a non-passive
+   touchmove preventDefault in the board component. */
+.touch-none-select-none {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* A soft animated party glow used behind hero text. */
+@keyframes float-glow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) scale(1.08);
+    opacity: 0.8;
+  }
+}
+
+.animate-float-glow {
+  animation: float-glow 6s ease-in-out infinite;
+}
+
+/* Shake used when an invalid word is submitted (also driven via Framer
+   Motion in places, but this is the CSS fallback for the input shell). */
+@keyframes shake-x {
+  10%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  80% {
+    transform: translateX(4px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-8px);
+  }
+  40%,
+  60% {
+    transform: translateX(8px);
+  }
+}
+
+.animate-shake {
+  animation: shake-x 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
