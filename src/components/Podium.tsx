@@ -20,12 +20,20 @@ const RANK_BAR = [
  *  columns re-order with a spring (Framer `layout`) as standings shift. */
 export default function Podium({ players, winnerId, celebrate = false }: Props) {
   const rows = Object.entries(players)
-    .map(([id, p]) => ({
-      id,
-      name: p.name ?? 'Player',
-      score: p.score ?? 0,
-      joinedAt: p.joinedAt ?? 0,
-    }))
+    .map(([id, p]) => {
+      const wordList = p.words ? [...p.words] : [];
+      // Sort longest to shortest, then alphabetically
+      wordList.sort((a, b) => b.length - a.length || a.localeCompare(b));
+      
+      return {
+        id,
+        name: p.name ?? 'Player',
+        score: p.score ?? 0,
+        joinedAt: p.joinedAt ?? 0,
+        words: wordList.length,
+        wordList,
+      };
+    })
     .sort((a, b) => b.score - a.score || a.joinedAt - b.joinedAt);
 
   const max = Math.max(1, ...rows.map((r) => r.score));
@@ -37,7 +45,7 @@ export default function Podium({ players, winnerId, celebrate = false }: Props) 
   }
 
   return (
-    <div className="flex items-end justify-center gap-3 overflow-x-auto px-2 pb-1 sm:gap-5">
+    <div className="flex items-end justify-center gap-3 overflow-x-auto px-2 pb-1 pt-20 sm:gap-5">
       {rows.map((r, idx) => {
         const pct = max > 0 ? (r.score / max) * 100 : 0;
         const isWinner = celebrate && r.id === winnerId;
@@ -83,6 +91,24 @@ export default function Podium({ players, winnerId, celebrate = false }: Props) 
               >
                 {r.name}
               </span>
+              {celebrate && (
+                <>
+                  <span className="text-xs font-medium text-grape/80 mt-1">
+                    {r.words} {r.words === 1 ? 'word' : 'words'}
+                  </span>
+                  <div className="mt-2 relative w-full flex flex-col items-center h-24 sm:h-32 overflow-hidden">
+                    <div className="flex flex-col gap-0.5 text-center w-full">
+                      {r.wordList.map((w, i) => (
+                        <span key={i} className="text-[10px] sm:text-xs font-display font-semibold tracking-wide text-grape/60 truncate px-1">
+                          {w}
+                        </span>
+                      ))}
+                    </div>
+                    {/* Fading gradient to match the background color (--color-sky) */}
+                    <div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-sky to-transparent pointer-events-none" />
+                  </div>
+                </>
+              )}
             </div>
           </motion.div>
         );

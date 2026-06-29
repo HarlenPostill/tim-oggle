@@ -69,25 +69,27 @@ export default function HostReveal({ code, room }: { code: string; room: Room })
       </div>
 
       {/* Current word + verdict */}
-      <div className="flex min-h-[5rem] flex-col items-center justify-center gap-2">
-        {total === 0 ? (
-          <p className="text-center text-xl text-grape/70">
-            No words found this round 😅
-          </p>
-        ) : word ? (
-          <WordHeadline
-            verdict={verdictFor(word, tally)}
-            nameOf={nameOf}
-            index={idx}
-            total={total}
-          />
-        ) : (
-          <p className="text-center text-xl text-ink">Get ready… 👀</p>
-        )}
-      </div>
+      {!finished && (
+        <div className="flex min-h-[5rem] flex-col items-center justify-center gap-2">
+          {total === 0 ? (
+            <p className="text-center text-xl text-grape/70">
+              No words found this round 😅
+            </p>
+          ) : word ? (
+            <WordHeadline
+              verdict={verdictFor(word, tally)}
+              nameOf={nameOf}
+              index={idx}
+              total={total}
+            />
+          ) : (
+            <p className="text-center text-xl text-ink">Get ready… 👀</p>
+          )}
+        </div>
+      )}
 
       {/* The board showing how the word was traced, above the podium */}
-      {room.board && (
+      {!finished && room.board && (
         <RevealBoard board={room.board} word={word} className="w-full max-w-sm" />
       )}
 
